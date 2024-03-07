@@ -19,21 +19,6 @@
     - role: win_delegate # Delegates sub-domain to IdM
       state: present
   tags: win2
-## Need to choose which method to update systems with.
-- name: Subscribe systems to RH CDN
-  hosts: ipaserver:ipareplicas
-  become: true
-  roles:
-    - role: subscribe-cdn # Registers RHEL systems to the Red Hat CDN
-  tags:
-    - cdn
-    - never
-- name: Subscribe systems to local satellite
-  hosts: all:!win
-  become: true
-  roles:
-    - role: subscribe-sat # Registers RHEL systems to local Satellite
-  tags: sat
 # OS section
 - name: Add local linux users
   hosts: all:!win
@@ -41,40 +26,16 @@
   roles:
     - role: local_users # Adds additional users to local RHEL systems
   tags: locUsers
-- name: Configure hosts file
-  hosts: all:!win
-  roles:
-    - role: update_hosts # Adds local hostname to /etc/hosts file
-  tags: confHosts
 - name: Update nameserver entry on ipareplcas and ipaclients
   hosts: ipareplicas:ipaclients
   roles:
     - role: rhel-system-roles.network # Changes IdM clients DNS to point to IdM server for resolution
   tags: network
-- name: Update Crypto for AD-Trust
-  hosts: ipaserver:ipareplicas
-  become: true
-  roles:
-    - role: redhat.rhel_system_roles.crypto_policies # Updates crypto policy
-      vars:
-        crypto_policies_policy: "{{ crypto }}"
-        crypto_policies_reboot_required: true
-  tags:
-    - crypto
-#    - never
 - name: Installs the IdM server
   hosts: ipaserver
   roles:
     - role: redhat.rhel_idm.ipaserver
   tags: server
-- name: Set umask on replicas and clients
-  hosts: ipareplicas:ipaclients
-  become: true
-  roles:
-    - role: umask22
-  tags:
-    - stig
-#    - never
 - name: Turn IdM DNS PTR Sync on
   hosts: ipaserver
   roles:
@@ -90,14 +51,6 @@
   roles:
     - role: redhat.rhel_idm.ipaclient
   tags: clients
-- name: Revert umask back on replicas and clients
-  hosts: ipareplicas:ipaclientss
-  become: true
-  roles:
-    - role: umask77
-  tags:
-    - stig
-#    - never
 # IdM configuration
 - name: Sets up the AD trust.
   hosts: ipaserver
