@@ -3,7 +3,7 @@
 - name: Promote to DC
   microsoft.ad.domain:
     dns_domain_name: "{{ root_domain }}"
-    safe_mode_password: "{{ admin_password }}"
+    safe_mode_password: "{{ ad_admin_password }}"
     domain_netbios_name: "{{ ad_netbios }}"
     create_dns_delegation: false
     reboot: true
