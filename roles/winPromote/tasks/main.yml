@@ -7,6 +7,9 @@
     domain_netbios_name: "{{ ad_netbios }}"
     create_dns_delegation: false
     reboot: true
+- name: Pause for reboot
+  ansible.builtin.pause:
+    minutes: 1
 - name: Create AD IdM groups for IdM integration
   microsoft.ad.group:
     name: "{{ item.ad_group }}"
