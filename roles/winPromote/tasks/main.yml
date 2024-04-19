@@ -3,7 +3,7 @@
 - name: Promote to DC
   microsoft.ad.domain:
     dns_domain_name: "{{ root_domain }}"
-    safe_mode_password: "{{ ad_admin_password }}"
+    safe_mode_password: "{{ admin_password }}"
     domain_netbios_name: "{{ ad_netbios }}"
     create_dns_delegation: false
     reboot: true
@@ -27,7 +27,7 @@
       add:
         - "{{ ad_groups[0].ad_group }}"
     domain_username: '{{ ad_netbios }}\{{ ad_admin }}'
-    domain_password: "{{ ad_admin_password }}"
+    domain_password: "{{ admin_password }}"
   with_items: "{{ ad_idm_users }}"
 - name: AD admins for IdM integration
   microsoft.ad.user:
@@ -41,7 +41,7 @@
         - "{{ ad_groups[1].ad_group }}"
         - Enterprise Admins
     domain_username: '{{ ad_netbios }}\{{ ad_admin }}'
-    domain_password: "{{ ad_admin_password }}"
+    domain_password: "{{ admin_password }}"
   with_items: "{{ ad_idm_admins }}"
 # Creating DNS delegation Enterprise Admin user. Admin uses old hash so fails to connect with IdM.
 - name: Add AD Enterprise User
@@ -55,4 +55,4 @@
       add:
         - Enterprise Admins
     domain_username: '{{ ad_netbios }}\{{ ad_admin }}'
-    domain_password: "{{ ad_admin_password }}"
+    domain_password: "{{ admin_password }}"
