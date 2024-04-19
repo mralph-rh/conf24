@@ -14,5 +14,5 @@
     ipaadmin_password: "{{ admin_password }}"
     realm: "{{ root_domain }}"
     admin: delegate
-    password: "{{ ad_admin_password }}"
+    password: "{{ admin_password }}"
     state: present
