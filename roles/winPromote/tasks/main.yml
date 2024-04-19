@@ -9,7 +9,7 @@
     reboot: true
 - name: Pause for reboot
   ansible.builtin.pause:
-    minutes: 1
+    minutes: 5
 - name: Create AD IdM groups for IdM integration
   microsoft.ad.group:
     name: "{{ item.ad_group }}"
